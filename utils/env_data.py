@@ -13,6 +13,7 @@ class DBConfig:
     DB_PASSWORD = getenv("DB_PASSWORD")
     DB_PORT = getenv("DB_PORT")
     DB_HOST = getenv("DB_HOST")
+    DB_CONFIG = getenv("DB_URL")
 
 class WebConfig:
     pass
