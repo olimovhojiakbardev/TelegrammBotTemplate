@@ -1,9 +1,8 @@
 from os import getenv
 
 from dotenv import load_dotenv
-from os.path import join
-from utils.settings import BASE_DIR
-load_dotenv(join(BASE_DIR, "/.env"))
+from utils.settings import ENV_PATH
+load_dotenv(ENV_PATH)
 
 class BotConfig:
     TOKEN = getenv("BOT_TOKEN")
