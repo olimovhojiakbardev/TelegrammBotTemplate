@@ -1,26 +1,33 @@
-from importlib.metadata import metadata
-from select import select
+import asyncio
+
+from sqlalchemy import String, DECIMAL, select, ForeignKey
+from sqlalchemy.orm import Mapped, relationship
+import sqlalchemy.testing.schema
 
 from db import Base, db
 from db.utils import CreatedModel
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.sql.sqltypes import String
 
-
-# class Category(CreatedModel):
-#     __tablename__ = 'categories'
-#     name:Mapped[str] = mapped_column(String(255), nullable=False)
-#
-#     @classmethod
-#     async def get_by_name(cls, name):
-#         query = (select(cls)
-#                  .where(cls.name.ilike(f'%{name}%'))
-#                  )
-#         objects = await db.execute(query)
-#         objects = objects.scalars()
-#         if objects:
-#             return objects.first()
-#         else:
-#             return []
+class Category(CreatedModel):
+    __tablename__ = "categories"
+    name: Mapped[str] = sqlalchemy.testing.schema.mapped_column(String(255))
+    products : Mapped[list['Product']] = relationship(back_populates="category")
+    def __str__(self):
+        return self.name
+# ctrl + space*2
+class Product(CreatedModel):
+    name : Mapped[str] = sqlalchemy.testing.schema.mapped_column(String(55), nullable=True)
+    price : Mapped[float] = sqlalchemy.testing.schema.mapped_column(DECIMAL(9, 2))
+    category_id : Mapped[int] = sqlalchemy.testing.schema.mapped_column(ForeignKey("categories.id", ondelete="CASCADE"), nullable=True)
+    category: Mapped['Category'] = relationship(back_populates="products")
+    @classmethod
+    async def get_by_name(cls, name):
+        query = select(cls).where(cls.name.ilike(f"%{name}%"))
+        objects = await db.execute(query)
+        object_ = objects.scalars()
+        if object_:
+            return object_
+        else:
+            return []
 
 metadata = Base.metadata
+

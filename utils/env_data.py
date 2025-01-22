@@ -1,24 +1,37 @@
 from os import getenv
+from pathlib import Path
 
 from dotenv import load_dotenv
+
 from utils.settings import ENV_PATH
+
 load_dotenv(ENV_PATH)
 
-class BotConfig:
-    TOKEN = getenv("BOT_TOKEN")
+
 
 class DBConfig:
-    DB_NAME = getenv("DB_NAME")
     DB_USER = getenv("DB_USER")
     DB_PASSWORD = getenv("DB_PASSWORD")
-    DB_PORT = getenv("DB_PORT")
+    DB_NAME = getenv("DB_NAME")
     DB_HOST = getenv("DB_HOST")
-    DB_CONFIG = getenv("DB_URL")
+    DB_PORT = getenv("DB_PORT")
+
 
 class WebConfig:
-    pass
+    ADMIN_USERNAME = getenv("ADMIN_USERNAME")
+    ADMIN_PASSWORD = getenv("ADMIN_PASSWORD")
+
+
+class PaymentConfig:
+    PAY_APP = getenv("PAY_APP")
+    PAY_TOKEN = getenv("PAY_TOKEN")
+
+class BotConfig:
+    TOKEN = getenv("TOKEN")
+
 
 class Config:
-    bot = BotConfig()
     db = DBConfig()
     web = WebConfig()
+    pay = PaymentConfig()
+    bot = BotConfig()

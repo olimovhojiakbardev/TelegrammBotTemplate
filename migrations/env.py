@@ -6,10 +6,11 @@ from sqlalchemy import pool
 
 from alembic import context
 from dotenv import load_dotenv
+
+
 from db.models import metadata
 from utils.settings import ENV_PATH
 
-load_dotenv(ENV_PATH)
 
 
 # this is the Alembic Config object, which provides
